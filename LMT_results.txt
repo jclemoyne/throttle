@@ -1,0 +1,164 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.trees.LMT -I -1 -M 15 -W 0.0
+Relation:     marketing_training
+Instances:    7414
+Attributes:   22
+              custAge
+              profession
+              marital
+              schooling
+              default
+              housing
+              loan
+              contact
+              month
+              day_of_week
+              campaign
+              pdays
+              previous
+              poutcome
+              emp.var.rate
+              cons.price.idx
+              cons.conf.idx
+              euribor3m
+              nr.employed
+              pmonths
+              pastEmail
+              responded
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+Logistic model tree 
+------------------
+: LM_1:85/85 (7414)
+
+Number of Leaves  : 	1
+
+Size of the Tree : 	1
+LM_1:
+Class no :
+-9.48 + 
+[profession=admin.] * -0.01 +
+[profession=blue-collar] * -0.05 +
+[profession=technician] * 0.11 +
+[profession=services] * 0.09 +
+[profession=unemployed] * 0.05 +
+[profession=housemaid] * 0.19 +
+[profession=unknown] * 0.17 +
+[profession=self-employed] * 0.06 +
+[profession=retired] * -0.14 +
+[profession=student] * -0.27 +
+[profession=entrepreneur] * -0.14 +
+[marital=single] * -0.02 +
+[marital=unknown] * -0.14 +
+[schooling=basic.4y] * 0.16 +
+[schooling=basic.9y] * 0.06 +
+[schooling=professional.course] * -0.02 +
+[schooling=basic.6y] * -0.07 +
+[schooling=unknown] * -0.19 +
+[default=no] * -0.15 +
+[loan=no] * -0.08 +
+[loan=yes] * 0.01 +
+[contact=telephone] * 0.24 +
+[month=nov] * 0.31 +
+[month=jul] * -0.07 +
+[month=may] * 0.27 +
+[month=aug] * 0.06 +
+[month=apr] * -0.11 +
+[month=jun] * -0.05 +
+[month=mar] * -0.41 +
+[month=sep] * 0.02 +
+[month=dec] * -0.28 +
+[day_of_week=mon] * 0.07 +
+[day_of_week=wed] * -0.03 +
+[day_of_week=fri] * -0.03 +
+[campaign] * 0.02 +
+[previous] * 0.02 +
+[poutcome=nonexistent] * -0.09 +
+[poutcome=failure] * 0.22 +
+[emp.var.rate] * 0.11 +
+[cons.price.idx] * -0.11 +
+[cons.conf.idx] * -0.01 +
+[euribor3m] * -0.01 +
+[nr.employed] * 0    +
+[pmonths] * 0    +
+[pastEmail] * 0.02
+
+Class yes :
+9.48 + 
+[profession=admin.] * 0.01 +
+[profession=blue-collar] * 0.05 +
+[profession=technician] * -0.11 +
+[profession=services] * -0.09 +
+[profession=unemployed] * -0.05 +
+[profession=housemaid] * -0.19 +
+[profession=unknown] * -0.17 +
+[profession=self-employed] * -0.06 +
+[profession=retired] * 0.14 +
+[profession=student] * 0.27 +
+[profession=entrepreneur] * 0.14 +
+[marital=single] * 0.02 +
+[marital=unknown] * 0.14 +
+[schooling=basic.4y] * -0.16 +
+[schooling=basic.9y] * -0.06 +
+[schooling=professional.course] * 0.02 +
+[schooling=basic.6y] * 0.07 +
+[schooling=unknown] * 0.19 +
+[default=no] * 0.15 +
+[loan=no] * 0.08 +
+[loan=yes] * -0.01 +
+[contact=telephone] * -0.24 +
+[month=nov] * -0.31 +
+[month=jul] * 0.07 +
+[month=may] * -0.27 +
+[month=aug] * -0.06 +
+[month=apr] * 0.11 +
+[month=jun] * 0.05 +
+[month=mar] * 0.41 +
+[month=sep] * -0.02 +
+[month=dec] * 0.28 +
+[day_of_week=mon] * -0.07 +
+[day_of_week=wed] * 0.03 +
+[day_of_week=fri] * 0.03 +
+[campaign] * -0.02 +
+[previous] * -0.02 +
+[poutcome=nonexistent] * 0.09 +
+[poutcome=failure] * -0.22 +
+[emp.var.rate] * -0.11 +
+[cons.price.idx] * 0.11 +
+[cons.conf.idx] * 0.01 +
+[euribor3m] * 0.01 +
+[nr.employed] * -0 +
+[pmonths] * -0 +
+[pastEmail] * -0.02
+
+
+Time taken to build model: 17.59 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances        6668               89.938  %
+Incorrectly Classified Instances       746               10.062  %
+Kappa statistic                          0.2939
+Mean absolute error                      0.1586
+Root mean squared error                  0.2829
+Relative absolute error                 78.8995 %
+Root relative squared error             89.2662 %
+Total Number of Instances             7414     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.986    0.777    0.908      0.986    0.946      0.347    0.794     0.957     no
+                 0.223    0.014    0.668      0.223    0.334      0.347    0.794     0.436     yes
+Weighted Avg.    0.899    0.691    0.881      0.899    0.876      0.347    0.794     0.898     
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+ 6481   93 |    a = no
+  653  187 |    b = yes
+

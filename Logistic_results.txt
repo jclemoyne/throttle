@@ -1,0 +1,199 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4
+Relation:     marketing_training
+Instances:    7414
+Attributes:   22
+              custAge
+              profession
+              marital
+              schooling
+              default
+              housing
+              loan
+              contact
+              month
+              day_of_week
+              campaign
+              pdays
+              previous
+              poutcome
+              emp.var.rate
+              cons.price.idx
+              cons.conf.idx
+              euribor3m
+              nr.employed
+              pmonths
+              pastEmail
+              responded
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+Logistic Regression with ridge parameter of 1.0E-8
+Coefficients...
+                                                 Class
+Variable                                            no
+======================================================
+custAge                                        -0.0013
+profession=admin.                              -0.0331
+profession=blue-collar                         -0.1395
+profession=technician                           0.2029
+profession=management                          -0.0107
+profession=services                             0.1655
+profession=unemployed                           0.0601
+profession=housemaid                            0.4503
+profession=unknown                               0.492
+profession=self-employed                         0.156
+profession=retired                             -0.3029
+profession=student                             -0.5389
+profession=entrepreneur                        -0.2809
+marital=single                                 -0.0554
+marital=married                                 0.0297
+marital=divorced                                0.0446
+marital=unknown                                -0.3132
+schooling=university.degree                    -0.0486
+schooling=high.school                          -0.0308
+schooling=basic.4y                               0.294
+schooling=basic.9y                              0.1127
+schooling=professional.course                  -0.0946
+schooling=basic.6y                             -0.1649
+schooling=unknown                              -0.3613
+schooling=illiterate                           78.3011
+default=unknown                                 0.1052
+default=no                                      -0.222
+default=yes                                   135.1378
+housing=no                                      0.0129
+housing=yes                                    -0.0175
+housing=unknown                                 0.0526
+loan=no                                        -0.0839
+loan=yes                                        0.0847
+loan=unknown                                    0.0526
+contact=telephone                               0.9274
+month=nov                                       0.5058
+month=jul                                      -0.0195
+month=may                                       0.0614
+month=aug                                      -0.6327
+month=apr                                      -0.3149
+month=jun                                       0.8453
+month=mar                                      -1.7971
+month=oct                                      -0.4379
+month=sep                                      -1.0525
+month=dec                                      -1.0488
+day_of_week=mon                                 0.1311
+day_of_week=wed                                -0.0947
+day_of_week=tue                                 -0.016
+day_of_week=fri                                -0.0703
+day_of_week=thu                                -0.0076
+campaign                                        0.0391
+pdays                                          -0.0188
+previous                                        0.0918
+poutcome=nonexistent                           -0.1829
+poutcome=failure                                0.3893
+poutcome=success                               -0.4365
+emp.var.rate                                    1.8318
+cons.price.idx                                 -2.8852
+cons.conf.idx                                  -0.0499
+euribor3m                                       0.0634
+nr.employed                                    -0.0171
+pmonths                                         0.0202
+pastEmail                                       0.0427
+Intercept                                     356.8939
+
+
+Odds Ratios...
+                                                 Class
+Variable                                            no
+======================================================
+custAge                                         0.9987
+profession=admin.                               0.9675
+profession=blue-collar                          0.8698
+profession=technician                            1.225
+profession=management                           0.9894
+profession=services                             1.1799
+profession=unemployed                           1.0619
+profession=housemaid                            1.5688
+profession=unknown                              1.6355
+profession=self-employed                        1.1688
+profession=retired                              0.7387
+profession=student                              0.5834
+profession=entrepreneur                         0.7551
+marital=single                                  0.9461
+marital=married                                 1.0302
+marital=divorced                                1.0456
+marital=unknown                                 0.7311
+schooling=university.degree                     0.9526
+schooling=high.school                           0.9697
+schooling=basic.4y                              1.3418
+schooling=basic.9y                              1.1193
+schooling=professional.course                   0.9098
+schooling=basic.6y                               0.848
+schooling=unknown                               0.6968
+schooling=illiterate             1.0132511059650086E34
+default=unknown                                 1.1109
+default=no                                      0.8009
+default=yes                       4.893389374644148E58
+housing=no                                       1.013
+housing=yes                                     0.9826
+housing=unknown                                  1.054
+loan=no                                         0.9195
+loan=yes                                        1.0884
+loan=unknown                                     1.054
+contact=telephone                               2.5279
+month=nov                                       1.6583
+month=jul                                       0.9807
+month=may                                       1.0633
+month=aug                                       0.5312
+month=apr                                       0.7298
+month=jun                                       2.3288
+month=mar                                       0.1658
+month=oct                                       0.6454
+month=sep                                       0.3491
+month=dec                                       0.3504
+day_of_week=mon                                 1.1401
+day_of_week=wed                                 0.9096
+day_of_week=tue                                 0.9842
+day_of_week=fri                                 0.9321
+day_of_week=thu                                 0.9924
+campaign                                        1.0399
+pdays                                           0.9814
+previous                                        1.0962
+poutcome=nonexistent                            0.8328
+poutcome=failure                                1.4759
+poutcome=success                                0.6463
+emp.var.rate                                     6.245
+cons.price.idx                                  0.0558
+cons.conf.idx                                   0.9513
+euribor3m                                       1.0655
+nr.employed                                     0.9831
+pmonths                                         1.0204
+pastEmail                                       1.0436
+
+
+Time taken to build model: 0.7 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances        6671               89.9784 %
+Incorrectly Classified Instances       743               10.0216 %
+Kappa statistic                          0.3163
+Mean absolute error                      0.1552
+Root mean squared error                  0.2804
+Relative absolute error                 77.2281 %
+Root relative squared error             88.479  %
+Total Number of Instances             7414     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.983    0.752    0.911      0.983    0.946      0.360    0.796     0.955     no
+                 0.248    0.017    0.652      0.248    0.359      0.360    0.796     0.452     yes
+Weighted Avg.    0.900    0.669    0.882      0.900    0.879      0.360    0.796     0.898     
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+ 6463  111 |    a = no
+  632  208 |    b = yes
+

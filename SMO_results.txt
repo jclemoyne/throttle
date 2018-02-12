@@ -1,0 +1,137 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -E 1.0 -C 250007" -calibrator "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4"
+Relation:     marketing_training
+Instances:    7414
+Attributes:   22
+              custAge
+              profession
+              marital
+              schooling
+              default
+              housing
+              loan
+              contact
+              month
+              day_of_week
+              campaign
+              pdays
+              previous
+              poutcome
+              emp.var.rate
+              cons.price.idx
+              cons.conf.idx
+              euribor3m
+              nr.employed
+              pmonths
+              pastEmail
+              responded
+Test mode:    10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+SMO
+
+Kernel used:
+  Linear Kernel: K(x,y) = <x,y>
+
+Classifier for classes: no, yes
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+        -0      * (normalized) custAge
+ +       0      * (normalized) profession=admin.
+ +      -0.0001 * (normalized) profession=blue-collar
+ +       0.0002 * (normalized) profession=technician
+ +      -0.0001 * (normalized) profession=management
+ +       0.0002 * (normalized) profession=services
+ +      -0.0002 * (normalized) profession=unemployed
+ +      -0.0001 * (normalized) profession=housemaid
+ +      -0.0002 * (normalized) profession=unknown
+ +       0      * (normalized) profession=self-employed
+ +       0      * (normalized) profession=retired
+ +       0.0001 * (normalized) profession=student
+ +       0.0001 * (normalized) profession=entrepreneur
+ +       0      * (normalized) marital=single
+ +      -0.0002 * (normalized) marital=married
+ +      -0.0001 * (normalized) marital=divorced
+ +       0.0002 * (normalized) marital=unknown
+ +       0.0001 * (normalized) schooling=university.degree
+ +      -0.0001 * (normalized) schooling=high.school
+ +       0.0001 * (normalized) schooling=basic.4y
+ +       0      * (normalized) schooling=basic.9y
+ +       0.0001 * (normalized) schooling=professional.course
+ +      -0      * (normalized) schooling=basic.6y
+ +      -0.0002 * (normalized) schooling=unknown
+ +      -0      * (normalized) default=unknown
+ +       0      * (normalized) default=no
+ +       0      * (normalized) housing=no
+ +       0      * (normalized) housing=yes
+ +      -0.0001 * (normalized) housing=unknown
+ +       0.0001 * (normalized) loan=no
+ +       0      * (normalized) loan=yes
+ +      -0.0001 * (normalized) loan=unknown
+ +      -0.0001 * (normalized) contact=telephone
+ +       0.0001 * (normalized) month=nov
+ +      -0      * (normalized) month=jul
+ +       0.0001 * (normalized) month=may
+ +       0.0001 * (normalized) month=aug
+ +      -0.0002 * (normalized) month=apr
+ +      -0.0004 * (normalized) month=jun
+ +       0.0001 * (normalized) month=mar
+ +      -0.0002 * (normalized) month=oct
+ +       0.0004 * (normalized) month=sep
+ +       0      * (normalized) month=dec
+ +       0.0001 * (normalized) day_of_week=mon
+ +       0      * (normalized) day_of_week=wed
+ +      -0.0001 * (normalized) day_of_week=tue
+ +      -0.0001 * (normalized) day_of_week=fri
+ +       0.0001 * (normalized) day_of_week=thu
+ +       0.0002 * (normalized) campaign
+ +      -0.1352 * (normalized) pdays
+ +      -0.002  * (normalized) previous
+ +      -0.5734 * (normalized) poutcome=nonexistent
+ +      -0.5731 * (normalized) poutcome=failure
+ +       1.1464 * (normalized) poutcome=success
+ +      -0.0009 * (normalized) emp.var.rate
+ +       0.0022 * (normalized) cons.price.idx
+ +       0.0007 * (normalized) cons.conf.idx
+ +      -0.0016 * (normalized) euribor3m
+ +       0.0022 * (normalized) nr.employed
+ +      -0.1461 * (normalized) pmonths
+ +       0.0004 * (normalized) pastEmail
+ -       0.1467
+
+Number of kernel evaluations: 162637547 (35.281% cached)
+
+
+
+Time taken to build model: 32.34 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances        6655               89.7626 %
+Incorrectly Classified Instances       759               10.2374 %
+Kappa statistic                          0.279 
+Mean absolute error                      0.1024
+Root mean squared error                  0.32  
+Relative absolute error                 50.9286 %
+Root relative squared error            100.9468 %
+Total Number of Instances             7414     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.985    0.788    0.907      0.985    0.945      0.331    0.599     0.907     no
+                 0.212    0.015    0.647      0.212    0.319      0.331    0.599     0.226     yes
+Weighted Avg.    0.898    0.700    0.878      0.898    0.874      0.331    0.599     0.830     
+
+=== Confusion Matrix ===
+
+    a    b   <-- classified as
+ 6477   97 |    a = no
+  662  178 |    b = yes
+

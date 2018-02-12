@@ -1,0 +1,248 @@
+=== Run information ===
+
+Scheme:       weka.classifiers.misc.InputMappedClassifier -I -trim -W weka.classifiers.bayes.NaiveBayes
+Relation:     marketing_training
+Instances:    7414
+Attributes:   22
+              custAge
+              profession
+              marital
+              schooling
+              default
+              housing
+              loan
+              contact
+              month
+              day_of_week
+              campaign
+              pdays
+              previous
+              poutcome
+              emp.var.rate
+              cons.price.idx
+              cons.conf.idx
+              euribor3m
+              nr.employed
+              pmonths
+              pastEmail
+              responded
+Test mode:    user supplied test set:  size unknown (reading incrementally)
+
+=== Classifier model (full training set) ===
+
+InputMappedClassifier:
+
+Naive Bayes Classifier
+
+                            Class
+Attribute                      no       yes
+                           (0.89)    (0.11)
+============================================
+custAge
+  mean                     39.8863   41.2681
+  std. dev.                10.0039   14.3119
+  weight sum                  4988       622
+  precision                 1.0704    1.0704
+
+profession
+  admin.                    1648.0     239.0
+  blue-collar               1527.0     140.0
+  technician                1092.0     122.0
+  management                 476.0      62.0
+  services                   665.0      56.0
+  unemployed                 149.0      26.0
+  housemaid                  172.0      17.0
+  unknown                     55.0       8.0
+  self-employed              225.0      25.0
+  retired                    232.0      77.0
+  student                     97.0      51.0
+  entrepreneur               248.0      29.0
+  [total]                   6586.0     852.0
+
+marital
+  single                    1824.0     296.0
+  married                   3988.0     459.0
+  divorced                   758.0      87.0
+  unknown                      8.0       2.0
+  [total]                   6578.0     844.0
+
+schooling
+  university.degree         1351.0     205.0
+  high.school               1088.0     130.0
+  basic.4y                   482.0      54.0
+  basic.9y                   721.0      65.0
+  professional.course        593.0      73.0
+  basic.6y                   250.0      27.0
+  unknown                    191.0      42.0
+  illiterate                   2.0       1.0
+  [total]                   4678.0     597.0
+
+default
+  unknown                   1357.0      77.0
+  no                        5218.0     765.0
+  yes                          2.0       1.0
+  [total]                   6577.0     843.0
+
+housing
+  no                        3036.0     372.0
+  yes                       3392.0     450.0
+  unknown                    149.0      21.0
+  [total]                   6577.0     843.0
+
+loan
+  no                        5393.0     708.0
+  yes                       1035.0     114.0
+  unknown                    149.0      21.0
+  [total]                   6577.0     843.0
+
+contact
+  cellular                  4031.0     702.0
+  telephone                 2545.0     140.0
+  [total]                   6576.0     842.0
+
+month
+  nov                        682.0      61.0
+  jul                       1124.0     107.0
+  may                       2350.0     181.0
+  aug                       1010.0     104.0
+  apr                        373.0     116.0
+  jun                        845.0      96.0
+  mar                         49.0      46.0
+  oct                         83.0      64.0
+  sep                         55.0      59.0
+  dec                         13.0      16.0
+  [total]                   6584.0     850.0
+
+day_of_week
+  mon                       1307.0     136.0
+  wed                       1155.0     142.0
+  tue                       1181.0     162.0
+  fri                       1097.0     152.0
+  thu                       1216.0     165.0
+  [total]                   5956.0     757.0
+
+campaign
+  mean                       2.695    2.1676
+  std. dev.                 2.7171    1.5772
+  weight sum                  6574       840
+  precision                 1.2188    1.2188
+
+pdays
+  mean                    983.3479  775.4143
+  std. dev.               124.0624  416.3791
+  weight sum                  6574       840
+  precision                  49.95     49.95
+
+previous
+  mean                      0.1441    0.4976
+  std. dev.                 0.4358    0.8715
+  weight sum                  6574       840
+  precision                      1         1
+
+poutcome
+  nonexistent               5784.0     568.0
+  failure                    703.0      99.0
+  success                     90.0     176.0
+  [total]                   6577.0     843.0
+
+emp.var.rate
+  mean                      0.3643   -1.1403
+  std. dev.                 1.4623    1.5466
+  weight sum                  6574       840
+  precision                 0.5333    0.5333
+
+cons.price.idx
+  mean                     93.5946   93.3574
+  std. dev.                 0.5575    0.6693
+  weight sum                  6574       840
+  precision                 0.1026    0.1026
+
+cons.conf.idx
+  mean                     -40.672  -39.9847
+  std. dev.                 4.3558    6.1756
+  weight sum                  6574       840
+  precision                  0.956     0.956
+
+euribor3m
+  mean                      3.7825    2.0217
+  std. dev.                 1.6483    1.6877
+  weight sum                  6574       840
+  precision                 0.0163    0.0163
+
+nr.employed
+  mean                   5177.4487  5094.396
+  std. dev.                66.0479   85.4391
+  weight sum                  6574       840
+  precision                  26.45     26.45
+
+pmonths
+  mean                    983.3479  775.4143
+  std. dev.               124.0624  416.3791
+  weight sum                  6574       840
+  precision                  49.95     49.95
+
+pastEmail
+  mean                      0.2884    0.9614
+  std. dev.                 1.0392    2.2118
+  weight sum                  6574       840
+  precision                    1.2       1.2
+
+
+Attribute mappings:
+
+Model attributes          	    Incoming attributes
+--------------------------	    ----------------
+(numeric) custAge         	--> 1 (numeric) custAge
+(nominal) profession      	--> 2 (nominal) profession
+(nominal) marital         	--> 3 (nominal) marital
+(nominal) schooling       	--> 4 (nominal) schooling
+(nominal) default         	--> 5 (nominal) default
+(nominal) housing         	--> 6 (nominal) housing
+(nominal) loan            	--> 7 (nominal) loan
+(nominal) contact         	--> 8 (nominal) contact
+(nominal) month           	--> 9 (nominal) month
+(nominal) day_of_week     	--> 10 (nominal) day_of_week
+(numeric) campaign        	--> 11 (numeric) campaign
+(numeric) pdays           	--> 12 (numeric) pdays
+(numeric) previous        	--> 13 (numeric) previous
+(nominal) poutcome        	--> 14 (nominal) poutcome
+(numeric) emp.var.rate    	--> 15 (numeric) emp.var.rate
+(numeric) cons.price.idx  	--> 16 (numeric) cons.price.idx
+(numeric) cons.conf.idx   	--> 17 (numeric) cons.conf.idx
+(numeric) euribor3m       	--> 18 (numeric) euribor3m
+(numeric) nr.employed     	--> 19 (numeric) nr.employed
+(numeric) pmonths         	--> 20 (numeric) pmonths
+(numeric) pastEmail       	--> 21 (numeric) pastEmail
+(nominal) responded       	--> 22 (nominal) responded
+
+
+Time taken to build model: 0.05 seconds
+
+=== Evaluation on test set ===
+
+Time taken to test model on supplied test set: 0.01 seconds
+
+=== Summary ===
+
+Correctly Classified Instances          92               88.4615 %
+Incorrectly Classified Instances        12               11.5385 %
+Kappa statistic                          0.1917
+Mean absolute error                      0.1231
+Root mean squared error                  0.328 
+Relative absolute error                 65.551  %
+Root relative squared error            111.0627 %
+Total Number of Instances              104     
+
+=== Detailed Accuracy By Class ===
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0.957    0.800    0.918      0.957    0.938      0.199    0.577     0.909     no
+                 0.200    0.043    0.333      0.200    0.250      0.199    0.577     0.326     yes
+Weighted Avg.    0.885    0.727    0.862      0.885    0.871      0.199    0.577     0.853     
+
+=== Confusion Matrix ===
+
+  a  b   <-- classified as
+ 90  4 |  a = no
+  8  2 |  b = yes
+
