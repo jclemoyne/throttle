@@ -55,6 +55,7 @@ CREATE TABLE `edge_class` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `label` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `label_UNIQUE` (`label`),
   KEY `bylabel` (`label`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,6 +116,50 @@ CREATE TABLE `entity_attrib` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `script`
+--
+
+DROP TABLE IF EXISTS `script`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `script` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(45) DEFAULT NULL,
+  `body` blob,
+  PRIMARY KEY (`id`),
+  KEY `bylabel` (`label`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `script_edge_map`
+--
+
+DROP TABLE IF EXISTS `script_edge_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `script_edge_map` (
+  `script_id` int(11) NOT NULL,
+  `edge_id` int(11) NOT NULL,
+  PRIMARY KEY (`script_id`,`edge_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `script_vx_map`
+--
+
+DROP TABLE IF EXISTS `script_vx_map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `script_vx_map` (
+  `script_id` int(11) NOT NULL,
+  `vx_id` int(11) NOT NULL,
+  PRIMARY KEY (`script_id`,`vx_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `vertex`
 --
 
@@ -128,7 +173,7 @@ CREATE TABLE `vertex` (
   PRIMARY KEY (`id`),
   KEY `byname` (`name`),
   KEY `byclass` (`class`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,8 +187,9 @@ CREATE TABLE `vertex_class` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `label` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `label_UNIQUE` (`label`),
   KEY `bylabel` (`label`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,4 +220,4 @@ CREATE TABLE `vertex_prop` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-06 11:35:04
+-- Dump completed on 2019-10-06 19:46:49

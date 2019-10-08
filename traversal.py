@@ -36,4 +36,4 @@ class Traversal:
 
 if __name__ == "__main__":
 	g = Traversal()
-	g.addVertex("test1", "case")
+	g.addVertex("human", "logic")
