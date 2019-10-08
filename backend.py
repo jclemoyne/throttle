@@ -54,5 +54,5 @@ class backend:
 
 if __name__ == "__main__":
 	graph = backend()
-	graph.empty_table("vertex_class")
+	# graph.empty_table("vertex_class")
 	# graph.test1_query()
