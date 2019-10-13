@@ -1,6 +1,7 @@
 import backend as be
 import mysql
 
+
 class Traversal:
 	def __init__(self):
 		self.be = be.backend()
@@ -32,8 +33,10 @@ class Traversal:
 		print(query_vx)
 		cursor = self.be.cnx.cursor(buffered=True)
 		cursor.execute(query_vx)
+		new_id = cursor.lastrowid
+		print("returned id: {}".format(new_id))
 
 
 if __name__ == "__main__":
 	g = Traversal()
-	g.addVertex("human", "logic")
+	g.addVertex("human", "memory")
