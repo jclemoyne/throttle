@@ -18,16 +18,15 @@ class Traversal:
 		print("\t{}".format(query_vx_class))
 		try:
 			cursor.execute(query_vx_class)
+			class_id = cursor.lastrowid
 		except mysql.connector.Error as err:
-			pass
-
-		query_get_class_id = ("SELECT id FROM vertex_class WHERE label=\"{}\"".format(class_label))
-		print(query_get_class_id)
-		cursor.execute(query_get_class_id)
-		class_id = -1
-		for (id, ) in cursor:
-			print("~~~> {}".format(id))
-			class_id = id
+			query_get_class_id = ("SELECT id FROM vertex_class WHERE label=\"{}\"".format(class_label))
+			print(query_get_class_id)
+			cursor.execute(query_get_class_id)
+			class_id = -1
+			for (id, ) in cursor:
+				print("~~~> {}".format(id))
+				class_id = id
 		query_vx = (
 			"INSERT INTO vertex (class, name) VALUES ({}, \"{}\")".format(class_id, name))
 		print(query_vx)
