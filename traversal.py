@@ -2,10 +2,30 @@ import backend as be
 import mysql
 
 
+class Vertex:
+	def __init__(self, be):
+		self.class_id = None
+		self.vx_id = None
+		self.be = be
+
+	def get_class_id(self, class_label):
+		cursor = self.be.cnx.cursor(buffered=True)
+		query_vx_class = (
+			"INSERT INTO vertex_class (label) "
+			"VALUES (\"{}\")".format(class_label))
+		try:
+			cursor.execute(query_vx_class)
+			self.class_id = cursor.lastrowid
+		except mysql.connector.Error as err:
+			query_get_class_id = ("SELECT id FROM vertex_class WHERE label=\"{}\"".format(class_label))
+			cursor.execute(query_get_class_id)
+			for (id, ) in cursor:
+				self.class_id = id
+
+
 class Traversal:
 	def __init__(self):
 		self.be = be.backend()
-	# self.be.test1_query()
 
 	def addVertex(self, name, class_label):
 		cursor = self.be.cnx.cursor(buffered=True)
@@ -37,5 +57,8 @@ class Traversal:
 
 
 if __name__ == "__main__":
-	g = Traversal()
-	g.addVertex("human", "memory")
+	# g = Traversal()
+	# g.addVertex("human", "memory")
+	vx = Vertex(be.backend())
+	vx.get_class_id("logic")
+	print(vx.class_id)
