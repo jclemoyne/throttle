@@ -33,14 +33,15 @@ DROP TABLE IF EXISTS `edge`;
 CREATE TABLE `edge` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `class` int(11) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `tail_vx` int(11) DEFAULT NULL,
-  `head_vx` int(11) DEFAULT NULL,
+  `relation` varchar(45) DEFAULT NULL,
+  `tail` int(11) DEFAULT NULL,
+  `head` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `byname` (`name`),
+  UNIQUE KEY `name_UNIQUE` (`relation`),
   KEY `byclass` (`class`),
-  KEY `bytail_vx` (`tail_vx`),
-  KEY `byhead_vx` (`head_vx`)
+  KEY `byrelation` (`relation`),
+  KEY `bytail` (`tail`),
+  KEY `byhead` (`head`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,6 +117,24 @@ CREATE TABLE `entity_attrib` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `flow`
+--
+
+DROP TABLE IF EXISTS `flow`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `flow` (
+  `id` int(11) NOT NULL,
+  `edge_id` varchar(45) DEFAULT NULL,
+  `x` varchar(45) DEFAULT NULL,
+  `w` varchar(45) DEFAULT NULL,
+  `min` varchar(45) DEFAULT NULL,
+  `max` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `script`
 --
 
@@ -171,6 +190,7 @@ CREATE TABLE `vertex` (
   `class` smallint(6) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `byname` (`name`),
   KEY `byclass` (`class`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
@@ -189,7 +209,7 @@ CREATE TABLE `vertex_class` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `label_UNIQUE` (`label`),
   KEY `bylabel` (`label`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,4 +240,4 @@ CREATE TABLE `vertex_prop` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-06 19:46:49
+-- Dump completed on 2019-11-18 21:29:57

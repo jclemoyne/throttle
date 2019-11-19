@@ -15,7 +15,21 @@ class Vertex:
 			format(self.class_id, self.label, self.vx_id, self.name)
 
 
-class VertexService:
+class Edge:
+	def __init__(self, edge_class_id, edge_class_label, edge_id, relation, tail_vx, head_vx):
+		self.edge_class_id = edge_class_id
+		self.edge_class_label = edge_class_label
+		self.edge_id = edge_id
+		self.relation = relation
+		self.tail = tail_vx
+		self.head = head_vx
+
+	def to_string(self):
+		return "class id: {};\t label: {};\tvertex id: {};\tname: {};\t({}, {})". \
+			format(self.edge_class_id, self.edge_class_label, self.edge_id, self.relation, self.tail.vx_id, self.head.vx_id)
+
+
+class GraphService:
 	def __init__(self, be):
 		self.be = be
 		self.current_vx = None
@@ -32,11 +46,11 @@ class VertexService:
 			pass
 		return class_id
 
-	def get_class_label(self, class_id):
+	def get_class_label(self, class_id, table):
 		class_label = None
 		cursor = self.be.cnx.cursor(buffered=True)
 		try:
-			query_get_class_id = ("SELECT label FROM vertex_class WHERE id=\"{}\"".format(class_id))
+			query_get_class_id = ("SELECT label FROM {}} WHERE id=\"{}\"".format(table, class_id))
 			cursor.execute(query_get_class_id)
 			for (label, ) in cursor:
 				class_label = label
@@ -60,6 +74,9 @@ class VertexService:
 				class_id = id
 		return class_id
 
+	def get_vx_class_label(self, class_id):
+		self.get_class_label(class_id, "vertex_class")
+
 	def newV(self, class_label, name):
 		class_id = self.add_class_id(class_label)
 		vx = None
@@ -76,7 +93,7 @@ class VertexService:
 			cursor = self.be.cnx.cursor(buffered=True)
 			cursor.execute(query_vx)
 			for (id, cid, name, ) in cursor:
-				class_label = self.get_class_label(cid)
+				class_label = self.get_vx_class_label(cid)
 				vx = Vertex(cid, class_label, id, name)
 		return vx
 
@@ -86,7 +103,7 @@ class VertexService:
 		cursor.execute(query_vx)
 		vx = None
 		for (id, cid, ) in cursor:
-			class_label = self.get_class_label(cid)
+			class_label = self.vx_(cid)
 			vx = Vertex(cid, class_label, id, name)
 		return vx
 
@@ -94,7 +111,7 @@ class VertexService:
 class Traversal:
 	def __init__(self):
 		self.be = be.backend()
-		self.service = VertexService(self.be)
+		self.service = GraphService(self.be)
 
 	def addV(self, class_label, name):
 		return self.service.newV(class_label, name)
@@ -115,7 +132,7 @@ def test_run(g):
 
 
 def test_check(g):
-	vx_service = VertexService(g.be)
+	vx_service = GraphService(g.be)
 	class_id = vx_service.get_class_id("logic")
 	print(class_id)
 	class_id = vx_service.get_class_id("human")
