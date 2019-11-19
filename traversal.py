@@ -50,7 +50,7 @@ class GraphService:
 		class_label = None
 		cursor = self.be.cnx.cursor(buffered=True)
 		try:
-			query_get_class_id = ("SELECT label FROM {}} WHERE id=\"{}\"".format(table, class_id))
+			query_get_class_id = ("SELECT label FROM {} WHERE id=\"{}\"".format(table, class_id))
 			cursor.execute(query_get_class_id)
 			for (label, ) in cursor:
 				class_label = label
@@ -58,27 +58,30 @@ class GraphService:
 			pass
 		return class_label
 
-	def add_class_id(self, class_label):
+	def add_class_id(self, class_label, table):
 		class_id = None
 		cursor = self.be.cnx.cursor(buffered=True)
-		query_vx_class = (
-			"INSERT INTO vertex_class (label) "
-			"VALUES (\"{}\")".format(class_label))
+		query_class = (
+			"INSERT INTO {} (label) "
+			"VALUES (\"{}\")".format(table, class_label))
 		try:
-			cursor.execute(query_vx_class)
+			cursor.execute(query_class)
 			class_id = cursor.lastrowid
 		except mysql.connector.Error as err:
-			query_get_class_id = ("SELECT id FROM vertex_class WHERE label=\"{}\"".format(class_label))
+			query_get_class_id = ("SELECT id FROM {} WHERE label=\"{}\"".format(table, class_label))
 			cursor.execute(query_get_class_id)
 			for (id, ) in cursor:
 				class_id = id
 		return class_id
 
 	def get_vx_class_label(self, class_id):
-		self.get_class_label(class_id, "vertex_class")
+		return self.get_class_label(class_id, "vertex_class")
+
+	def add_vx_class_id(self, class_label):
+		return self.add_class_id(class_label, "vertex_class")
 
 	def newV(self, class_label, name):
-		class_id = self.add_class_id(class_label)
+		class_id = self.add_vx_class_id(class_label)
 		vx = None
 		query_vx = (
 			"INSERT INTO vertex (class, name) VALUES ({}, \"{}\")".format(class_id, name))
