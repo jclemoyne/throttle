@@ -9,7 +9,7 @@ from mysql.connector.errors import Error
 
 import numpy as np
 
-cache_dir = "cache/"
+cache_dir = "/Users/jclaudel/work/Data/reseau_cache/"
 simulated_graph_path = cache_dir + "simulated_graph.pkl"
 
 if not os.path.exists(cache_dir):
