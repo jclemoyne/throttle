@@ -1,6 +1,19 @@
+import sys
+import os
+import random
+import pickle
+
 import backend as be
 import mysql
 from mysql.connector.errors import Error
+
+import numpy as np
+
+cache_dir = "cache/"
+simulated_graph_path = cache_dir + "simulated_graph.pkl"
+
+if not os.path.exists(cache_dir):
+    os.mkdir(cache_dir)
 
 
 class Vertex:
@@ -124,9 +137,11 @@ class GraphService:
         tail_id = vx_tail.vx_id
         head_id = vx_head.vx_id
         class_id = self.add_edge_class_id(class_label)
+        # print("**** class_id: {}\trelation: {}\ttail_id: {}\thead_id: {}".
+        #       format(class_id, relation, tail_id, head_id))
         edge = None
         query_vx = (
-            "INSERT INTO edge (class, relation, tail, head) VALUES ({}, \"{}\")".format(class_id, relation, tail_id,
+            "INSERT INTO edge (class, relation, tail, head) VALUES ({}, \"{}\", {}, {})".format(class_id, relation, tail_id,
                                                                                         head_id))
         cursor = self.be.cnx.cursor(buffered=True)
         try:
@@ -153,7 +168,7 @@ class GraphService:
             vx = Vertex(cid, class_label, id, name)
         return vx
 
-    def newE(self, tail, head, relation):
+    def test_newE(self, tail, head, relation):
         vx_tail = self.getVertexByName(tail)
         vx_head = self.getVertexByName(head)
         edge_class_id = self.add_class_id(relation, "edge_class")
@@ -173,8 +188,94 @@ class Traversal:
     def V(self, name):
         return self.service.getVertexByName(name)
 
-    def addE(self, tail, head, relation):
-        return self.service.newE(tail, head, relation)
+    def addE(self, class_label, tail, head, relation):
+        return self.service.newE(class_label, tail, head, relation)
+
+
+def simulate_test_gen_graph(g):
+    nV = 1000   # number of nodes
+    nL = 10     # number of layers
+    verset = dict()     # vertex set
+    layers = dict()
+    edge_set = dict()
+
+    # generate 10 vertex classes
+    vertex_labels = list(range(1, 11))
+    vertex_labels = ["vxclass" + str(i) for i in vertex_labels]
+    print("vertex labels: ", vertex_labels)
+    edge_labels = list(range(1, 11))
+    edge_labels = ["edgeclass" + str(i) for i in edge_labels]
+    print("edge labels: ", edge_labels)
+    # build Vertex labels
+    for i in range(1, nV +1):
+        name = "v-{}".format(i)
+        verset[name] = dict()
+        verset[name]["id"] = i
+        label = random.choice(vertex_labels)
+        verset[name]["label"] = label
+        # print("==id: {}\t label: {}".format(i, label))
+    root_node = 1
+    layer_sizes = np.random.multinomial(nV, np.ones(nL)/nL, size=1)[0]
+    print("--- layer sizes ", layer_sizes)
+    sum_sizes = 0
+    for sz in layer_sizes:
+        sum_sizes += sz
+    print("--- sum of sizes: {}".format(sum_sizes))
+
+    ix_list = list(range(1, nV + 1))
+    random.shuffle(ix_list)
+    ngl = 0
+    for k in range(len(layer_sizes)):
+        sz = layer_sizes[k]
+        # print(k, ngl, sz)
+        gen_set = ix_list[ngl:ngl + sz]
+        if root_node in gen_set:
+            gen_set.remove(root_node)
+        ngl += len(gen_set)
+        layers[k+1] = gen_set
+    for k in layers:
+        layer_vertices = layers[k]
+        nlv = len(layer_vertices)
+        print("{})\tsize: {}\t{}".format(k, nlv, layer_vertices))
+    print("total # layers elements: {}".format(ngl))
+    print("# layers: {}".format(len(layers)))
+    # generate edges
+    # connect root node to first layer
+    m = 0
+    for n in layers[1]:
+        m += 1
+        relation = "edge-{}".format(m)
+        edge_set[relation] = dict()
+        edge_set[relation]["id"] = m
+        edge_set[relation]["arc"] = (root_node, n)
+        label = random.choice(edge_labels)
+        edge_set[relation]["label"] = label
+
+    print("# edges: ", len(edge_set))
+
+    for k in range(2, nL + 1):
+        prev_layer = layers[k - 1]
+        # print("{}) # previous layer: {}".format(k, len(prev_layer)))
+        current_layer = layers[k]
+        # print("{}) # current layer: {}".format(k, len(current_layer)))
+        for tail in prev_layer:
+            repeat = random.randint(3, 10)
+            for j in range(repeat):
+                head = random.choice(current_layer)
+                m += 1
+                relation = "edge-{}".format(m)
+                edge_set[relation] = dict()
+                edge_set[relation]["id"] = m
+                edge_set[relation]["arc"] = (tail, head)
+                label = random.choice(edge_labels)
+                edge_set[relation]["label"] = label
+
+    print(edge_set)
+    print("# edges: {}\t generated: {}".format(len(edge_set), m))
+
+    with open(simulated_graph_path, "wb") as f:
+        G = (verset, edge_set)
+        pickle.dump(G, f)
 
 
 def test_run(g):
@@ -206,5 +307,6 @@ def test_check(g):
 
 if __name__ == "__main__":
     g = Traversal()
-    test_run(g)
-# test_check(g)
+    # test_run(g)
+    # test_check(g)
+    simulate_test_gen_graph(g)
