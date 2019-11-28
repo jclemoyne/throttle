@@ -168,6 +168,7 @@ class GraphService:
             vx = Vertex(cid, class_label, id, name)
         return vx
 
+    # deprecated
     def test_newE(self, tail, head, relation):
         vx_tail = self.getVertexByName(tail)
         vx_head = self.getVertexByName(head)
@@ -278,6 +279,20 @@ def simulate_test_gen_graph(g):
         pickle.dump(G, f)
 
 
+def dump_simulate_graph(G):
+    verset, edge_set = G
+    for node in verset:
+        print(node, verset[node])
+    for edge in edge_set:
+        print(edge, edge_set[edge])
+
+
+def populate_from_simulated_graph(g):
+    with open(simulated_graph_path, "rb") as f:
+        G = (verset, edge_set) = pickle.load(f)
+        dump_simulate_graph(G)
+
+
 def test_run(g):
     vx = g.addV("depot", "Novato")
     print(vx.to_string())
@@ -309,4 +324,5 @@ if __name__ == "__main__":
     g = Traversal()
     # test_run(g)
     # test_check(g)
-    simulate_test_gen_graph(g)
+    # simulate_test_gen_graph(g)
+    populate_from_simulated_graph(g)
