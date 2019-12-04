@@ -24,7 +24,7 @@ class Vertex:
         self.name = name
 
     def to_string(self):
-        return "class id: {};\t label: {};\tvertex id: {};\tname: {};". \
+        return "class id: {};\t label: {};\tvertex \tid: {};\tname: {};". \
             format(self.class_id, self.label, self.vx_id, self.name)
 
 
@@ -38,7 +38,7 @@ class Edge:
         self.head = vx_head
 
     def to_string(self):
-        return "class id: {};\t label: {};\tvertex id: {};\tname: {};\t({}, {})". \
+        return "class id: {};\t label: {};\tvertex \tid: {};\tname: {};\t({}, {})". \
             format(self.edge_class_id, self.edge_class_label, self.edge_id, self.relation, self.tail.vx_id,
                    self.head.vx_id)
 
@@ -131,6 +131,42 @@ class GraphService:
             vx = Vertex(cid, class_label, id, name)
         return vx
 
+    def forwardV(self, vx):
+        cursor = self.be.cnx.cursor(buffered=True)
+        query_forward = ("SELECT head FROM edge WHERE tail={};".format(vx.vx_id))
+        cursor.execute(query_forward)
+        out_vx_list = []
+        for (head, ) in cursor:
+            ov = self.getVertexById(head)
+            out_vx_list += [ov]
+        return out_vx_list
+
+    def getVdegree(self, vx):
+        ovx_list = self.forwardV(vx)
+        return len(ovx_list)
+
+    def getEdgeById(self, id):
+        cursor = self.be.cnx.cursor(buffered=True)
+        query_edge = ("SELECT class as cid, relation, tail, head FROM edge WHERE id=\"{}\"".format(id))
+        cursor.execute(query_edge)
+        edge = None
+        for (cid, relation, tail, head, ) in cursor:
+            class_label = self.get_class_label(cid, "edge_class")
+            vx_tail = self.getVertexById(tail)
+            vx_head = self.getVertexById(head)
+            edge = Edge(cid, class_label, id, relation, vx_tail, vx_head)
+        return edge
+
+    def getVertexByName(self, name):
+        cursor = self.be.cnx.cursor(buffered=True)
+        query_vx = ("SELECT id, class as cid FROM vertex WHERE name=\"{}\"".format(name))
+        cursor.execute(query_vx)
+        vx = None
+        for (id, cid,) in cursor:
+            class_label = self.get_class_label(cid, "vertex_class")
+            vx = Vertex(cid, class_label, id, name)
+        return vx
+
     def newE(self, class_label, tail, head, relation):
         vx_tail = self.getVertexByName(tail)
         vx_head = self.getVertexByName(head)
@@ -158,15 +194,58 @@ class GraphService:
                 edge = Edge(cid, class_label, id, relation, vx_tail, vx_head)
         return edge
 
-    def getVertexByName(self, name):
+    def get_tablenames(self):
+        query = """
+            select table_schema as database_name, table_name
+            from information_schema.tables
+            where table_type = 'BASE TABLE' and table_schema = database() 
+            order by database_name, table_name;        
+        """
+        table_name_list = []
         cursor = self.be.cnx.cursor(buffered=True)
-        query_vx = ("SELECT id, class as cid FROM vertex WHERE name=\"{}\"".format(name))
+        try:
+            cursor.execute(query)
+            for (database_name, table_name,) in cursor:
+                table_name_list += [table_name]
+        except mysql.connector.Error as err:
+            print("********** ", err)
+        return table_name_list
+
+    # should be used with care
+    def truncate_all_tables(self):
+        tables = self.get_tablenames()
+        cursor = self.be.cnx.cursor(buffered=True)
+        for table_name in tables:
+            try:
+                truncate_query = "TRUNCATE TABLE {};".format(table_name)
+                cursor.execute(truncate_query)
+            except:
+                pass
+        print("truncated tables: ", tables)
+
+    def integrity_test(self, G):
+        verset, edge_set = G
+        # for inode in verset:
+        #     print(inode, verset[inode])
+        query_vx = "SELECT id, class as cid, name FROM vertex;"
+        cursor = self.be.cnx.cursor(buffered=True)
         cursor.execute(query_vx)
-        vx = None
-        for (id, cid,) in cursor:
-            class_label = self.get_class_label(cid, "vertex_class")
-            vx = Vertex(cid, class_label, id, name)
-        return vx
+        vx_hit = 0
+        for (id, cid, name) in cursor:
+            print("id: {} class: {} name: {}".format(id, cid, name))
+            if verset[id]["name"] == name:
+                vx_hit += 1
+
+        query_edge = "SELECT id, class as cid, relation, tail, head FROM edge;"
+        cursor.execute(query_edge)
+        edge_hit = 0
+        for (id, cid, relation, tail, head) in cursor:
+            print("id: {} class: {} relation: {} tail: {} head: {}".format(id, cid, relation, tail, head))
+            if edge_set[relation]["id"] == id:
+                edge_hit += 1
+
+        print("# vertex hit: ", vx_hit)
+        print("# edge hit: ", edge_hit)
 
     # deprecated
     def test_newE(self, tail, head, relation):
@@ -192,10 +271,27 @@ class Traversal:
     def addE(self, class_label, tail, head, relation):
         return self.service.newE(class_label, tail, head, relation)
 
+    def V(self, vx_id):
+        return self.service.getVertexById(vx_id)
+
+    def outV(self, vx_id):
+        vx = self.V(vx_id)
+        return self.service.forwardV(vx)
+
+    def degreeV(self, vx_id):
+        self.outV(vx_id)
+        vx = self.V(vx_id)
+        return self.service.getVdegree(vx)
+
+
+def cache_simulated_graph(G):
+    with open(simulated_graph_path, "wb") as f:
+        pickle.dump(G, f)
+
 
 def simulate_test_gen_graph(g):
-    nV = 1000   # number of nodes
-    nL = 10     # number of layers
+    nV = 10000      # number of nodes
+    nL = 20         # number of layers
     verset = dict()     # vertex set
     layers = dict()
     edge_set = dict()
@@ -208,12 +304,14 @@ def simulate_test_gen_graph(g):
     edge_labels = ["edgeclass" + str(i) for i in edge_labels]
     print("edge labels: ", edge_labels)
     # build Vertex labels
+    kk = 0
     for i in range(1, nV +1):
         name = "v-{}".format(i)
-        verset[name] = dict()
-        verset[name]["id"] = i
+        verset[i] = dict()
+        verset[i]["name"] = name
         label = random.choice(vertex_labels)
-        verset[name]["label"] = label
+        verset[i]["label"] = label
+        kk += 1
         # print("==id: {}\t label: {}".format(i, label))
     root_node = 1
     layer_sizes = np.random.multinomial(nV, np.ones(nL)/nL, size=1)[0]
@@ -248,7 +346,7 @@ def simulate_test_gen_graph(g):
         relation = "edge-{}".format(m)
         edge_set[relation] = dict()
         edge_set[relation]["id"] = m
-        edge_set[relation]["arc"] = (root_node, n)
+        edge_set[relation]["arc"] = (verset[root_node]["name"], verset[n]["name"])
         label = random.choice(edge_labels)
         edge_set[relation]["label"] = label
 
@@ -267,16 +365,15 @@ def simulate_test_gen_graph(g):
                 relation = "edge-{}".format(m)
                 edge_set[relation] = dict()
                 edge_set[relation]["id"] = m
-                edge_set[relation]["arc"] = (tail, head)
+                edge_set[relation]["arc"] = (verset[tail]["name"], verset[head]["name"])
                 label = random.choice(edge_labels)
                 edge_set[relation]["label"] = label
 
-    print(edge_set)
+    G = (verset, edge_set)
+    cache_simulated_graph(G)
+    dump_simulate_graph(G)
+    print("# vertices: {}\t generated: {}".format(len(verset), kk))
     print("# edges: {}\t generated: {}".format(len(edge_set), m))
-
-    with open(simulated_graph_path, "wb") as f:
-        G = (verset, edge_set)
-        pickle.dump(G, f)
 
 
 def dump_simulate_graph(G):
@@ -291,6 +388,24 @@ def populate_from_simulated_graph(g):
     with open(simulated_graph_path, "rb") as f:
         G = (verset, edge_set) = pickle.load(f)
         dump_simulate_graph(G)
+    for inode in verset:
+        vx = g.addV(verset[inode]['label'], verset[inode]['name'])
+        verset[inode]["id"] = vx.vx_id
+        print(inode, verset[inode])
+    for relation in edge_set:
+        tail, head = edge_set[relation]['arc']
+        edge = g.addE(edge_set[relation]['label'], tail, head, relation)
+        edge_set[relation]["id"] = edge.edge_id
+        print(relation, edge_set[relation])
+    cache_simulated_graph(G)
+
+
+def integrity_test(g):
+    with open(simulated_graph_path, "rb") as f:
+        G = (verset, edge_set) = pickle.load(f)
+        dump_simulate_graph(G)
+    service = GraphService(g.be)
+    service.integrity_test(G)
 
 
 def test_run(g):
@@ -320,9 +435,27 @@ def test_check(g):
         print(vx.to_string())
 
 
+def test_db_utilities(g):
+    service = GraphService(g.be)
+    # service.get_tablenames()
+    service.truncate_all_tables()
+
+
+def test_graph_commands(g):
+    for vx_id in range(2, 10):
+        ovx_list = g.outV(vx_id)
+        for vx in ovx_list:
+            print(vx.to_string())
+        print("list len: ", len(ovx_list))
+        print("degree: ", g.degreeV(vx_id))
+
+
 if __name__ == "__main__":
     g = Traversal()
     # test_run(g)
     # test_check(g)
+    # test_db_utilities(g)
     # simulate_test_gen_graph(g)
-    populate_from_simulated_graph(g)
+    # populate_from_simulated_graph(g)
+    # integrity_test(g)
+    test_graph_commands(g)
